@@ -8,10 +8,10 @@ import threading
 # vlc -I rc --no-osd --rc-host 127.1:8888
 
 
-background_file = "/home/dg/Downloads/big_buck_bunny.mp4"
+background_file = "background.mp4"
 background_length = 1
 
-button_file = "/home/dg/Downloads/echo-hereweare.mp4"
+button_file = "button.mp4"
 button_length = 5
 
 
