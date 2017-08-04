@@ -17,26 +17,30 @@ void setup() {
   pinMode(led, OUTPUT);
 }
 
+int button_counter = 0;
+
 // the loop routine runs over and over again forever:
 void loop() {
-  // read the input pin:
-  int buttonState = digitalRead(pushButton);
-  // print out the state of the button:
-  
-  
-  for (int x = 0; x < 1000; x++) 
+
+  int button_state = digitalRead(pushButton);
+
+  if (button_state)
   {
+     button_counter = 0;
+  }   
+  
+  if (button_counter < 500)
+  {
+    ++button_counter;
       Serial.println("on");
-      delay(1);        // delay in between reads for stability  
       digitalWrite(led, HIGH);
-  }  
-  
-  for (int x = 0; x < 5000; x++) 
-  {
-      Serial.println("off");
-      delay(1);        // delay in between reads for stability  
-      digitalWrite(led, LOW);
   }
+  else
+  {  
+      Serial.println("off");
+      digitalWrite(led, LOW);
+  }  
+  delay(1);
 }
 
 
