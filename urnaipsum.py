@@ -4,14 +4,17 @@ import remote
 from time import sleep, time
 import serial
 import threading
+import os
+import sys
 
 # vlc -I rc --no-osd --rc-host 127.1:8888
 
+path = os.path.dirname(os.path.realpath(sys.argv[0]))
 
-background_file = "background.mp4"
+background_file = path + "/background.mp4"
 background_length = 1
 
-button_file = "button.mp4"
+button_file = path + "/button.mp4"
 button_length = 5
 
 
@@ -53,7 +56,7 @@ mode = "background"
 started = time()
 
 play(background_file)
-sleep(0.1)
+sleep(1)
 player.x("f on")
 
 while True:
