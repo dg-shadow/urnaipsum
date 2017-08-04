@@ -11,11 +11,11 @@ import sys
 
 path = os.path.dirname(os.path.realpath(sys.argv[0]))
 
-background_file = path + "/background.mp4"
-background_length = 1
+background_file = path + "/background.mpeg"
+background_length = 7*60
 
-button_file = path + "/button.mp4"
-button_length = 5
+button_file = path + "/button.mov"
+button_length = 2*60+33
 
 
 

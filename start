@@ -1,4 +1,4 @@
-sleep 5
+sleep 60
 vlc -I "rc qt4" --no-osd --rc-host 127.1:8888 --qt-fullscreen-screennumber=1 -f &
-sleep 1
+sleep 10
 ~/urnaipsum/urnaipsum.py
