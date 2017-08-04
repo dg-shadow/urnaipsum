@@ -1,11 +1,20 @@
 #!/usr/bin/env python
 
 import remote
-from time import sleep
+from time import sleep, time
 import serial
 import threading
 
 # vlc -I rc --no-osd --rc-host 127.1:8888
+
+
+background_file = "/home/dg/Downloads/big_buck_bunny.mp4"
+background_length = 1
+
+button_file = "/home/dg/Downloads/echo-hereweare.mp4"
+button_length = 5
+
+
 
 port = "/dev/ttyUSB0"
 baud = 9600
@@ -13,41 +22,55 @@ baud = 9600
 incoming = serial.Serial(port, baud, timeout=100)
 
 mutex = threading.Lock()
-button_state = 0
+button_state = False
+player = remote.VLC()
+
+def play(file_path):
+    global player
+    player.clear()
+    player.add(file_path)
+    player.play()
 
 def listen_to_button():
+    global button_state
     while True:
         message = incoming.readline()
         if message == "on\r\n":
             mutex.acquire()
             button_state = True
-            print "on"
             mutex.release()
 
         elif message == "off\r\n":
             mutex.acquire()
             button_state = False
-            print "off"
             mutex.release()
 
 
 thread = threading.Thread(target=listen_to_button)
 thread.start()
 
-player = remote.VLC()
+mode = "background"
+started = time()
 
-player.add("/home/dg/Downloads/echo-hereweare.mp4")
-player.play()
+play(background_file)
 sleep(0.1)
 player.x("f on")
-sleep(5)
-
-player.clear()
-player.add("/home/dg/Downloads/big_buck_bunny.mp4")
-player.play()
 
 while True:
-    sleep(1)
-    # player.clear()
-    # player.add("/home/dg/Downloads/big_buck_bunny.mp4")
-    # player.play()
+    if mode == "background":
+        if time() - started > background_length:
+            print "looping background"
+            play(background_file)
+            started = time()
+        if button_state:
+            print "starting button"
+            mode = "button"
+            play(button_file)
+            started = time()
+    else:
+        if time() - started > button_length:
+            print "end of button"
+            play(background_file)
+            mode = "background"
+            started = time()
+    sleep(0.1)
